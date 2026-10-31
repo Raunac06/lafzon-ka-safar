@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171323">
+<title>मेरी शायरी — Lafzon Ka Safar</title>
+<style>
+:root{--bg:#100e18;--panel:#1b1726;--panel2:#241e32;--text:#f7f0e8;--muted:#b9aec5;--gold:#e9bd79;--pink:#d98fa9;--line:#ffffff18}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#39233d 0,transparent 38%),var(--bg);color:var(--text);font-family:Georgia,"Noto Serif Devanagari",serif;min-height:100vh}
+header{max-width:1100px;margin:auto;padding:26px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{font-size:20px;letter-spacing:.08em;color:var(--gold)}.brand span{color:var(--pink)}
+.hero{max-width:1100px;margin:35px auto 48px;padding:0 22px;text-align:center}.eyebrow{color:var(--pink);letter-spacing:.22em;text-transform:uppercase;font:12px Arial,sans-serif}
+h1{font-size:clamp(42px,8vw,76px);font-weight:400;margin:18px 0 12px;line-height:1.15}h1 em{color:var(--gold);font-style:normal}
+.sub{color:var(--muted);font:16px/1.7 Arial,sans-serif;max-width:560px;margin:auto}
+.wrap{max-width:1100px;margin:auto;padding:0 22px 70px;display:grid;grid-template-columns: minmax(280px,350px) 1fr;gap:24px;align-items:start}
+.panel{background:linear-gradient(145deg,#211b2d,#181522);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 18px 60px #0003}
+h2{font-size:23px;font-weight:400;margin:0 0 20px}.field{margin:14px 0}.field label{display:block;color:var(--muted);font:12px Arial,sans-serif;margin-bottom:8px}
+input,textarea,select{width:100%;background:#100e18;color:var(--text);border:1px solid #ffffff20;border-radius:10px;padding:12px 13px;font:14px Arial,sans-serif;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}textarea{min-height:150px;resize:vertical;line-height:1.8}
+button{border:0;border-radius:999px;padding:12px 18px;background:var(--gold);color:#211729;font-weight:700;cursor:pointer;font-size:13px}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}button.secondary{background:#ffffff12;color:var(--text);border:1px solid var(--line)}button.danger{background:#6c3448;color:white}
+.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.hint{color:#93899d;font:11px/1.6 Arial,sans-serif;margin-top:12px}
+.list-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.list-head h2{margin:0}.tools{display:flex;gap:8px;align-items:center}.tools input{width:min(190px,42vw);padding:10px 12px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.poem{background:linear-gradient(145deg,#292136,#1b1726);border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;min-height:190px;display:flex;flex-direction:column}
+.tag{font:10px Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--pink);margin-bottom:13px}.poem-text{white-space:pre-wrap;font-size:17px;line-height:1.9;flex:1}.poem-title{font-size:19px;color:var(--gold);margin:0 0 10px;font-weight:400}.poem-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:18px;color:var(--muted);font:11px Arial,sans-serif}.poem-actions{display:flex;gap:7px}.poem-actions button{padding:7px 10px;font-size:11px}
+.empty{grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--muted);border:1px dashed #ffffff30;border-radius:16px;line-height:1.8}
+footer{text-align:center;color:#80768c;font:11px Arial,sans-serif;padding:0 20px 28px}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}.hero{margin:20px auto 34px}.cards{grid-template-columns:1fr}.list-head{align-items:flex-start;flex-direction:column}.tools{width:100%}.tools input{flex:1;width:auto}}
+</style>
+</head>
+<body>
+<header><div class="brand">LAFZON <span>KA SAFAR</span></div><button class="secondary" id="exportBtn">Backup डाउनलोड</button></header>
+<section class="hero">
+ <div class="eyebrow">Aapke jazbaat · Aapke alfaaz</div>
+ <h1>मेरी <em>शायरी</em></h1>
+ <p class="sub">कुछ अल्फ़ाज़ दिल से निकलते हैं और हमेशा के लिए ठहर जाते हैं। अपनी शायरी यहाँ लिखें, सँभालें और फिर कभी भी पढ़ें।</p>
+</section>
+<main class="wrap">
+ <section class="panel">
+  <h2 id="formHeading">नई शायरी लिखें ✍️</h2>
+  <form id="poemForm">
+   <div class="field"><label for="title">शीर्षक (वैकल्पिक)</label><input id="title" maxlength="70" placeholder="जैसे — अधूरी मुलाक़ात"></div>
+   <div class="field"><label for="category">शायरी की किस्म</label><select id="category"><option>मोहब्बत</option><option>दर्द</option><option>दोस्ती</option><option>ज़िंदगी</option><option>प्रेरणा</option><option>अन्य</option></select></div>
+   <div class="field"><label for="body">आपकी शायरी *</label><textarea id="body" required maxlength="3000" placeholder="अपने दिल की बात यहाँ लिखें..."></textarea></div>
+   <div class="form-actions"><button type="submit" id="saveBtn">शायरी सेव करें</button><button type="button" class="secondary" id="cancelBtn" hidden>रद्द करें</button></div>
+   <p class="hint">आपकी शायरी इसी ब्राउज़र और डिवाइस में सेव रहेगी।</p>
+  </form>
+ </section>
+ <section>
+  <div class="list-head"><h2>आपकी शायरियाँ <span id="count" style="color:var(--gold)">(0)</span></h2><div class="tools"><input id="search" placeholder="शायरी खोजें..."><select id="filter" aria-label="श्रेणी चुनें"><option value="सभी">सभी</option><option>मोहब्बत</option><option>दर्द</option><option>दोस्ती</option><option>ज़िंदगी</option><option>प्रेरणा</option><option>अन्य</option></select></div></div>
+  <div class="cards" id="cards"></div>
+ </section>
+</main>
+<footer>आपके लफ़्ज़, आपकी दुनिया · Lafzon Ka Safar</footer>
+<script>
+const KEY='lafzon-ka-safar-poems-v1';
+let poems=JSON.parse(localStorage.getItem(KEY)||'[]'),editing=null;
+const $=id=>document.getElementById(id);
+function persist(){localStorage.setItem(KEY,JSON.stringify(poems));render()}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function reset(){editing=null;$('poemForm').reset();$('formHeading').textContent='नई शायरी लिखें ✍️';$('saveBtn').textContent='शायरी सेव करें';$('cancelBtn').hidden=true}
+$('poemForm').addEventListener('submit',e=>{e.preventDefault();const item={title:$('title').value.trim(),category:$('category').value,body:$('body').value.trim(),date:new Date().toLocaleDateString('hi-IN')};if(!item.body)return;if(editing){poems=poems.map(p=>p.id===editing?{...p,...item}:p)}else{poems.unshift({id:Date.now(),...item})}persist();reset()});
+$('cancelBtn').onclick=reset;
+function render(){const q=$('search').value.toLowerCase(),f=$('filter').value;const shown=poems.filter(p=>(f==='सभी'||p.category===f)&&(`${p.title} ${p.body} ${p.category}`).toLowerCase().includes(q));$('count').textContent=`(${poems.length})`;$('cards').innerHTML=shown.length?shown.map(p=>`<article class="poem"><div class="tag">${safe(p.category)}</div>${p.title?`<h3 class="poem-title">${safe(p.title)}</h3>`:''}<div class="poem-text">${safe(p.body)}</div><div class="poem-foot"><span>${safe(p.date||'')}</span><div class="poem-actions"><button class="secondary" onclick="copyPoem(${p.id})">कॉपी</button><button class="secondary" onclick="editPoem(${p.id})">बदलें</button><button class="danger" onclick="deletePoem(${p.id})">हटाएँ</button></div></div></article>`).join(''):'<div class="empty">अभी यहाँ कोई शायरी नहीं है।<br>बाईं तरफ़ अपनी पहली शायरी लिखकर सेव करें। ✨</div>'}
+window.copyPoem=id=>{const p=poems.find(x=>x.id===id);navigator.clipboard?.writeText((p.title?p.title+'\\n':'')+p.body).then(()=>alert('शायरी कॉपी हो गई!')).catch(()=>alert('कॉपी नहीं हो पाई।'))};
+window.editPoem=id=>{const p=poems.find(x=>x.id===id);if(!p)return;editing=id;$('title').value=p.title;$('category').value=p.category;$('body').value=p.body;$('formHeading').textContent='शायरी में बदलाव करें';$('saveBtn').textContent='बदलाव सेव करें';$('cancelBtn').hidden=false;window.scrollTo({top:0,behavior:'smooth'})};
+window.deletePoem=id=>{if(confirm('क्या आप यह शायरी हटाना चाहते हैं?')){poems=poems.filter(p=>p.id!==id);persist();if(editing===id)reset()}};
+$('search').addEventListener('input',render);$('filter').addEventListener('change',render);
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(poems,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='meri-shayari-backup.json';a.click();URL.revokeObjectURL(url)};
+render();
+</script>
+</body></html>

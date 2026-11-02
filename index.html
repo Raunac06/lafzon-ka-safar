@@ -324,11 +324,13 @@ function openMessage() {
 }
 
 function closeMessage(event) {
+  const popup = document.getElementById("messagePopup");
+
   if (
-    event.target.id === "messagePopup" ||
-    event.target.classList.contains("close-message")
+    event.target === popup ||
+    (event.target.closest && event.target.closest(".close-message"))
   ) {
-    document.getElementById("messagePopup").classList.remove("show");
+    popup.classList.remove("show");
   }
 }
 </script>

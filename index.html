@@ -7,7 +7,87 @@
 <title>Lafzon Ka Safar</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}
+.message-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(8,5,15,0.82);
+  backdrop-filter: blur(9px);
+  justify-content: center;
+  align-items: center;
+  padding: 18px;
+}
+
+.message-overlay.show {
+  display: flex;
+  animation: fadeIn 0.45s ease;
+}
+
+.message-box {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px 22px;
+  border: 1px solid #c28b9e;
+  border-radius: 22px;
+  background: linear-gradient(145deg,#28172f,#17121f);
+  box-shadow: 0 0 35px rgba(226,151,190,0.35);
+  text-align: center;
+  animation: popupZoom 0.65s cubic-bezier(.2,.8,.2,1);
+}
+
+.message-heart {
+  font-size: 42px;
+  animation: heartBeat 1.5s infinite;
+}
+
+.message-box h2 {
+  color: #ffd59e;
+}
+
+.message-text {
+  color: #f7e8ed;
+  line-height: 1.9;
+  white-space: pre-line;
+  text-align: left;
+  font-size: 16px;
+}
+
+.message-sign {
+  color: #ffd59e;
+  font-size: 24px;
+  margin-top: 22px;
+  text-align: right;
+}
+
+.close-message {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  background: #684052;
+  border-radius: 50%;
+  padding: 8px 12px;
+}
+
+@keyframes fadeIn {
+  from {opacity:0}
+  to {opacity:1}
+}
+
+@keyframes popupZoom {
+  from {transform:scale(.65);opacity:0}
+  to {transform:scale(1);opacity:1}
+}
+
+@keyframes heartBeat {
+  0%,100% {transform:scale(1)}
+  50% {transform:scale(1.2)}
+}
+  *{box-sizing:border-box}
 body{margin:0;background:#100f18;color:#f7eee5;font-family:Georgia,serif}
 header{text-align:center;padding:35px 15px;background:linear-gradient(135deg,#24152e,#56304c)}
 h1{font-size:34px;margin:0;color:#ffd59e}
@@ -29,7 +109,30 @@ footer{text-align:center;padding:30px;color:#c7aab9}
   <button onclick="document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});">
     🔐 Admin Login
   </button>
+<button onclick="openMessage()">
+  💌 मेरे बारे में
+</button>
 </div>
+  <div id="messagePopup" class="message-overlay" onclick="closeMessage(event)">
+  <div class="message-box">
+    <button class="close-message" onclick="closeMessage(event)">✕</button>
+
+    <div class="message-heart">💌</div>
+    <h2>मेरे कुछ अल्फ़ाज़</h2>
+
+    <div class="message-text">
+      ऐसा नहीं है कि मैं शायरी लिखता हूं या मुझे शायरी का शौक है ।
+      बस जो बात, जज्बात मेरे दिल को छू जाते हैं भले ही वो किसी और के लिखे हुए हो या मेरे दिमाग की उपज हो, इससे पहले कि वो मेरे दिमाग से उतर जाए मैं उन्हें अपनी डायरी में उतार लेता हूं।
+
+      मैं आदमी भी अलग किस्म का हूं, मेरे दिल और दिमाग पर कब कौन सी बात घर कर जाए ये मुझे खुद नहीं पता
+      कि
+
+      "सुकून मिलता है दो लफ्ज़ कागज पर उतार कर, चीख भी लेता हूं और आवाज भी नहीं निकलती"
+    </div>
+
+    <div class="message-sign">°रोनक</div>
+  </div>
+  </div>
   <header>
 <h1>लफ़्ज़ों का सफ़र</h1>
 <p>RONAK DUMOLIYA की कलम से ❤️</p>
@@ -215,6 +318,19 @@ async function deletePoem(id){
 
 db.auth.onAuthStateChange(()=>updateAdmin());
 updateAdmin();
+function openMessage() {
+  const popup = document.getElementById("messagePopup");
+  popup.classList.add("show");
+}
+
+function closeMessage(event) {
+  if (
+    event.target.id === "messagePopup" ||
+    event.target.classList.contains("close-message")
+  ) {
+    document.getElementById("messagePopup").classList.remove("show");
+  }
+}
 </script>
 </body>
 </html>

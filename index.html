@@ -107,14 +107,14 @@ input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;border-radius:8p
 .poem h3{color:#ffd59e;margin-top:0}
 .small{color:#c7aab9;font-size:13px}
 #adminPanel{display:none;background:#211b29;padding:18px;border-radius:12px;margin-top:20px}
-#loginPanel{background:#211b29;padding:18px;border-radius:12px;margin-top:20px}
+
 footer{text-align:center;padding:30px;color:#c7aab9}
 </style>
 </head>
 <body>
 <div style="background:#211b29;padding:10px 20px;text-align:right;border-bottom:1px solid #76536a;">
-  <button onclick="document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});">
-    🔐 Admin Login
+  <button onclick="openLogin()">
+  🔐 Admin Login
   </button>
 <button onclick="openMessage()">
   💌 मेरे बारे में
@@ -168,17 +168,58 @@ footer{text-align:center;padding:30px;color:#c7aab9}
   <span id="pageInfo">पेज 1</span>
   <button onclick="changePage(1)">अगला पेज ➡</button>
 </div>
-<div id="loginPanel">
-<h2>Admin Login</h2>
-<input id="email" type="email" placeholder="Admin Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<p id="loginMessage" class="small"></p>
+<div id="loginPanel" class="login-overlay" style="display:none;">
+  <div class="login-modal">
+    <button type="button" onclick="closeLogin()" class="close-login">✕</button>
+
+    <h2>🔐 Admin Login</h2>
+
+    <input id="email" type="email" placeholder="Admin Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+    <p id="loginMessage" class="small"></p>
+  </div>
 </div>
 
 <style>
 #adminPanel {
   display: none;
+}
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.login-modal {
+  position: relative;
+  background: #211b29;
+  border: 1px solid #76536a;
+  border-radius: 15px;
+  padding: 25px;
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+}
+
+.login-modal input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0;
+  padding: 12px;
+}
+
+.close-login {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 </style>
   <div id="adminPanel">
@@ -279,7 +320,14 @@ card.append(shareBtn);
  });
 }
 
-async function login(){
+function openLogin(){
+  document.getElementById("loginPanel").style.display = "flex";
+}
+
+function closeLogin(){
+  document.getElementById("loginPanel").style.display = "none";
+}
+  async function login(){
  const email=el("email").value.trim();
  const password=el("password").value;
  el("loginMessage").textContent="Login हो रहा है...";
@@ -291,7 +339,8 @@ async function login(){
   return;
  }
  el("loginMessage").textContent="Login सफल हुआ!";
- updateAdmin();
+closeLogin();
+    updateAdmin();
 }
 
 async function logout(){
@@ -304,7 +353,7 @@ async function updateAdmin(){
  const {data}=await db.auth.getSession();
  const isAdmin=data.session?.user?.email===ADMIN_EMAIL;
  el("adminPanel").style.display=isAdmin?"block":"none";
- el("loginPanel").style.display=isAdmin?"none":"block";
+ el("loginPanel").style.display="none";
  loadPoems();
 }
 

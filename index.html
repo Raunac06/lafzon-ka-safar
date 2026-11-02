@@ -25,8 +25,14 @@ footer{text-align:center;padding:30px;color:#c7aab9}
 </style>
 </head>
 <body>
-<header>
+<div style="background:#211b29;padding:10px 20px;text-align:right;border-bottom:1px solid #76536a;">
+  <button onclick="document.getElementById('loginPanel').scrollIntoView({behavior:'smooth'});">
+    🔐 Admin Login
+  </button>
+</div>
+  <header>
 <h1>लफ़्ज़ों का सफ़र</h1>
+<p>Raunac की कलम से ❤️</p>
 <p>कुछ अल्फ़ाज़, कुछ एहसास... ❤️</p>
 </header>
 <main>
@@ -35,9 +41,9 @@ footer{text-align:center;padding:30px;color:#c7aab9}
   id="search"
   type="search"
   placeholder="🔍 अपनी पसंदीदा शायरी खोजें..."
-  oninput="loadPoems()"
+  oninput="currentPage=1;loadPoems()"
 >
- <select id="filter" onchange="loadPoems()">
+ <select id="filter" onchange="currentPage=1;loadPoems()">
 <option value="">सभी Categories</option>
 <option>मोहब्बत</option>
 <option>दर्द</option>
@@ -46,7 +52,11 @@ footer{text-align:center;padding:30px;color:#c7aab9}
 <option>अन्य</option>
 </select>
 <div id="poems">शायरियाँ लोड हो रही हैं...</div>
-
+<div id="pagination" style="text-align:center;padding:20px;">
+  <button onclick="changePage(-1)">⬅ पिछला पेज</button>
+  <span id="pageInfo">पेज 1</span>
+  <button onclick="changePage(1)">अगला पेज ➡</button>
+</div>
 <div id="loginPanel">
 <h2>Admin Login</h2>
 <input id="email" type="email" placeholder="Admin Email">
@@ -81,9 +91,16 @@ const ADMIN_EMAIL = "ronaksingh9358@gmail.com";
 const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 function el(id){return document.getElementById(id)}
+let currentPage = 1;
+const poemsPerPage = 10;
 
+function changePage(direction) {
+  currentPage += direction;
+  loadPoems();
+}
 async function loadPoems(){
- const box=el("poems");
+
+  const box=el("poems");
  box.textContent="शायरियाँ लोड हो रही हैं...";
  let query=db.from("poems").select("*").order("created_at",{ascending:false});
  const category=el("filter").value;
@@ -103,9 +120,21 @@ if(!filteredData.length){
     : "अभी कोई शायरी नहीं है।";
   return;
 }
- const {data:sessionData}=await db.auth.getSession();
+const totalPages = Math.max(1, Math.ceil(filteredData.length / poemsPerPage));
+
+if (currentPage > totalPages) currentPage = totalPages;
+
+const startIndex = (currentPage - 1) * poemsPerPage;
+const pageData = filteredData.slice(startIndex, startIndex + poemsPerPage);
+
+el("pageInfo").textContent = `पेज ${currentPage} / ${totalPages}`;
+
+const pagination = el("pagination");
+pagination.children[0].disabled = currentPage === 1;
+pagination.children[2].disabled = currentPage === totalPages;
+  const {data:sessionData}=await db.auth.getSession();
  const isAdmin=sessionData.session?.user?.email===ADMIN_EMAIL;
- filteredData.forEach(poem=>{
+ pageData.forEach(poem=>{
   const card=document.createElement("div");
   card.className="poem";
   const heading=document.createElement("h3");

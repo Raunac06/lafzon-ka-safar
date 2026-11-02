@@ -113,7 +113,7 @@ footer{text-align:center;padding:30px;color:#c7aab9}
   💌 मेरे बारे में
 </button>
 </div>
-  <div id="messagePopup" class="message-overlay" onclick="closeMessage(event)">
+ <div id="messagePopup" class="message-overlay">
   <div class="message-box">
     <button class="close-message" onclick="closeMessage(event)">✕</button>
 
@@ -323,15 +323,8 @@ function openMessage() {
   popup.classList.add("show");
 }
 
-function closeMessage(event) {
-  const popup = document.getElementById("messagePopup");
-
-  if (
-    event.target === popup ||
-    (event.target.closest && event.target.closest(".close-message"))
-  ) {
-    popup.classList.remove("show");
-  }
+function closeMessage() {
+  document.getElementById("messagePopup").classList.remove("show");
 }
 </script>
 </body>

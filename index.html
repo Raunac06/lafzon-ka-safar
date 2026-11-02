@@ -224,7 +224,7 @@ footer{text-align:center;padding:30px;color:#c7aab9}
 </style>
   <div id="adminPanel">
 <h2>नई शायरी जोड़ें</h2>
-<input id="title" placeholder="शायरी का शीर्षक">
+
 <select id="category">
 <option>मोहब्बत</option>
 <option>दर्द</option>
@@ -309,7 +309,7 @@ shareBtn.onclick = () => {
   window.open(url, "_blank");
 };
 card.append(shareBtn);
-  card.append(heading,categoryText,words);
+  card.append(categoryText,words);
   if(isAdmin){
    const del=document.createElement("button");
    del.textContent="शायरी हटाएँ";
@@ -358,15 +358,15 @@ async function updateAdmin(){
 }
 
 async function addPoem(){
- const title=el("title").value.trim();
+ 
  const category=el("category").value;
  const body=el("body").value.trim();
- if(!title||!body){el("adminMessage").textContent="शीर्षक और शायरी लिखें।";return}
+ if(!body){el("adminMessage").textContent="शायरी लिखें।";return}
  el("adminMessage").textContent="सेव हो रहा है...";
- const {error}=await db.from("poems").insert([{title,category,body}]);
+ const {error}=await db.from("poems").insert([{category,body}]);
  if(error){el("adminMessage").textContent="त्रुटि: "+error.message;return}
  el("adminMessage").textContent="शायरी सफलतापूर्वक सेव हो गई!";
- el("title").value="";
+ 
  el("body").value="";
  loadPoems();
 }

@@ -413,7 +413,54 @@ function changePage(direction) {
   currentPage += direction;
   loadPoems();
 }
-async function loadPoems(){
+function getVoterId() {
+  let voterId = localStorage.getItem("poemVoterId");
+
+  if (!voterId) {
+    voterId = crypto.randomUUID();
+    localStorage.setItem("poemVoterId", voterId);
+  }
+
+  return voterId;
+}
+async function getLikeCount(poemId) {
+  const { count, error } = await db
+    .from("poem_likes")
+    .select("*", { count: "exact", head: true })
+    .eq("poem_id", poemId);
+
+  if (error) {
+    console.error(error);
+    return 0;
+  }
+
+  return count || 0;
+}
+ async function toggleLike(poemId, button) {
+  const voterId = getVoterId();
+
+  const { error } = await db
+    .from("poem_likes")
+    .insert([{
+      poem_id: poemId,
+      voter_id: voterId
+    }]);
+
+  if (error) {
+    if (error.code === "23505") {
+      alert("आप इस शायरी को पहले ही Like कर चुके हैं ❤️");
+    } else {
+      alert("Like नहीं हो पाया। दोबारा कोशिश करें।");
+      console.error(error);
+    }
+    return;
+  }
+
+  const count = await getLikeCount(poemId);
+  button.textContent = `❤️ Like ${count}`;
+  button.disabled = true;
+ }
+  async function loadPoems(){
 
   const box=el("poems");
  box.textContent="शायरियाँ लोड हो रही हैं...";
@@ -457,6 +504,16 @@ pagination.children[2].disabled = currentPage === totalPages;
  pageData.forEach(poem=>{
   const card=document.createElement("div");
   card.className="poem";
+    const likeBtn = document.createElement("button");
+likeBtn.textContent = "❤️ Like ...";
+
+getLikeCount(poem.id).then(count => {
+  likeBtn.textContent = `❤️ Like ${count}`;
+});
+
+likeBtn.onclick = () => toggleLike(poem.id, likeBtn);
+
+card.append(likeBtn); 
      const favorites = getFavorites();
 
   const favoriteBtn = document.createElement("button");

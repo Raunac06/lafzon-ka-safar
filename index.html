@@ -436,7 +436,24 @@ async function getLikeCount(poemId) {
 
   return count || 0;
 }
- async function toggleLike(poemId, button) {
+async function hasLiked(poemId) {
+  const voterId = getVoterId();
+
+  const { data, error } = await db
+    .from("poem_likes")
+    .select("id")
+    .eq("poem_id", poemId)
+    .eq("voter_id", voterId)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    return false;
+  }
+
+  return !!data;
+}
+  async function toggleLike(poemId, button) {
   const voterId = getVoterId();
 
   const { error } = await db
@@ -504,11 +521,18 @@ pagination.children[2].disabled = currentPage === totalPages;
  pageData.forEach(poem=>{
   const card=document.createElement("div");
   card.className="poem";
-    const likeBtn = document.createElement("button");
+const likeBtn = document.createElement("button");
 likeBtn.textContent = "❤️ Like ...";
 
-getLikeCount(poem.id).then(count => {
-  likeBtn.textContent = `❤️ Like ${count}`;
+Promise.all([
+  getLikeCount(poem.id),
+  hasLiked(poem.id)
+]).then(([count, liked]) => {
+  likeBtn.textContent = liked
+    ? `❤️ Liked ${count}`
+    : `❤️ Like ${count}`;
+
+  likeBtn.disabled = liked;
 });
 
 likeBtn.onclick = () => toggleLike(poem.id, likeBtn);

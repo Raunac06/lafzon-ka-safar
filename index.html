@@ -195,6 +195,7 @@ button {
 <input
   id="search"
   type="search"
+  <button id="favoritesToggle" onclick="toggleFavoritesView()">❤️ सिर्फ पसंदीदा</button>
   placeholder="🔍 अपनी पसंदीदा शायरी खोजें..."
   oninput="currentPage=1;loadPoems()"
 >
@@ -294,8 +295,36 @@ const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 function el(id){return document.getElementById(id)}
 let currentPage = 1;
-const poemsPerPage = 10;
+  let showFavoritesOnly = false;
 
+function toggleFavoritesView() {
+  showFavoritesOnly = !showFavoritesOnly;
+
+  const btn = el("favoritesToggle");
+  btn.textContent = showFavoritesOnly
+    ? "📖 सभी शायरियाँ"
+    : "❤️ सिर्फ पसंदीदा";
+
+  currentPage = 1;
+  loadPoems();
+}
+const poemsPerPage = 10;
+function getFavorites() {
+  return JSON.parse(localStorage.getItem("favoritePoems") || "[]");
+}
+
+function toggleFavorite(id) {
+  let favorites = getFavorites();
+
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(item => item !== id);
+  } else {
+    favorites.push(id);
+  }
+
+  localStorage.setItem("favoritePoems", JSON.stringify(favorites));
+  loadPoems();
+}
 function changePage(direction) {
   currentPage += direction;
   loadPoems();
@@ -312,9 +341,14 @@ async function loadPoems(){
  if(error){box.textContent="शायरियाँ लोड नहीं हुईं: "+error.message;return}
 const searchTerm = el("search").value.trim().toLowerCase();
 
+const favorites = getFavorites();
+
 const filteredData = data.filter(poem =>
-  (poem.title || "").toLowerCase().includes(searchTerm) ||
-  (poem.body || "").toLowerCase().includes(searchTerm)
+  (!showFavoritesOnly || favorites.includes(poem.id)) &&
+  (
+    (poem.title || "").toLowerCase().includes(searchTerm) ||
+    (poem.body || "").toLowerCase().includes(searchTerm)
+  )
 );
 if(!filteredData.length){
   box.textContent = searchTerm
@@ -339,6 +373,16 @@ pagination.children[2].disabled = currentPage === totalPages;
  pageData.forEach(poem=>{
   const card=document.createElement("div");
   card.className="poem";
+     const favorites = getFavorites();
+
+  const favoriteBtn = document.createElement("button");
+  favoriteBtn.textContent = favorites.includes(poem.id)
+    ? "❤️ पसंदीदा"
+    : "🤍 Favorite";
+
+  favoriteBtn.onclick = () => toggleFavorite(poem.id);
+
+  card.append(favoriteBtn);
   const heading=document.createElement("h3");
   heading.textContent=poem.title;
   const categoryText=document.createElement("p");

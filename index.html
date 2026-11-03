@@ -192,24 +192,26 @@ button {
 </header>
 <main>
 <h2>मेरी शायरियाँ</h2>
-  <button id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
-  <button id="readingToggle" onclick="toggleReadingMode()">🌙 Reading Mode</button>
-<input
-  id="search"
-  type="search"
-  placeholder="🔍 अपनी पसंदीदा शायरी खोजें..."
-  oninput="currentPage=1;loadPoems()"
->
 
-<button id="favoritesToggle" onclick="toggleFavoritesView()">❤️ सिर्फ पसंदीदा</button>
- <select id="filter" onchange="currentPage=1;loadPoems()">
-<option value="">सभी Categories</option>
-<option>मोहब्बत</option>
-<option>दर्द</option>
-<option>ज़िंदगी</option>
-<option>दोस्ती</option>
-<option>अन्य</option>
-</select>
+<button id="menuToggle" onclick="toggleMenu()">☰ Menu</button>
+
+<div id="menuPanel" style="display:none;">
+
+  <button id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
+
+  <button id="readingToggle" onclick="toggleReadingMode()">🌙 Reading Mode</button>
+
+  <input
+    id="search"
+    type="search"
+    placeholder="🔍 अपनी पसंदीदा शायरी खोजें..."
+    oninput="currentPage=1;loadPoems()"
+  >
+
+  <button id="favoritesToggle" onclick="toggleFavoritesView()">❤️ सिर्फ पसंदीदा</button>
+
+
+</div>
 <div id="poems">शायरियाँ लोड हो रही हैं...</div>
 <div id="pagination" style="text-align:center;padding:20px;">
   <button onclick="changePage(-1)">⬅ पिछला पेज</button>
@@ -329,6 +331,29 @@ body.light-mode .poem p {
 body.light-mode footer {
   color: #684b5b;
 }
+#menuToggle {
+  background: linear-gradient(135deg, #bd718e, #87516e);
+  border: 1px solid #d69bb0;
+  border-radius: 12px;
+  padding: 12px 22px;
+  font-size: 17px;
+  margin: 10px 0;
+}
+
+#menuPanel {
+  background: #241b2b;
+  border: 1px solid #76536a;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 12px 0 20px;
+}
+
+#menuPanel button,
+#menuPanel input {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
   </style>
   <div id="adminPanel">
 <h2>नई शायरी जोड़ें</h2>
@@ -354,7 +379,18 @@ const SUPABASE_KEY = "sb_publishable_X95sFn59x6nZEiEVkMV92w_OaC4ey6v";
 const ADMIN_EMAIL = "ronaksingh9358@gmail.com";
 
 const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function toggleMenu() {
+  const panel = el("menuPanel");
+  const btn = el("menuToggle");
 
+  if (panel.style.display === "none") {
+    panel.style.display = "block";
+    btn.textContent = "✕ Close";
+  } else {
+    panel.style.display = "none";
+    btn.textContent = "☰ Menu";
+  }
+}
 function el(id){return document.getElementById(id)}
 let currentPage = 1;
   let showFavoritesOnly = false;
@@ -482,8 +518,7 @@ async function hasLiked(poemId) {
   const box=el("poems");
  box.textContent="शायरियाँ लोड हो रही हैं...";
  let query=db.from("poems").select("*").order("created_at",{ascending:false});
- const category=el("filter").value;
- if(category) query=query.eq("category",category);
+
  const {data,error}=await query;
  box.replaceChildren();
  if(error){box.textContent="शायरियाँ लोड नहीं हुईं: "+error.message;return}

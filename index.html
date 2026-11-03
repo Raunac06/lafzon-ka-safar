@@ -153,7 +153,32 @@ button {
   border: 1px solid #a87591;
   border-radius: 12px;
   }
-</style>
+.poem-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #76536a;
+}
+
+.poem-actions button {
+  flex: 1 1 auto;
+  width: auto;
+  margin: 0;
+}
+
+.poem-actions button:last-child {
+  flex: 0 0 44px;
+  font-size: 20px;
+  padding: 10px;
+}
+
+body.light-mode .poem-actions {
+  border-top-color: #d9b7c7;
+                       }
+  </style>
 </head>
 <body>
 <div style="background:#211b29;padding:10px 20px;text-align:right;border-bottom:1px solid #76536a;">
@@ -567,29 +592,48 @@ Promise.all([
     ? `❤️ Liked ${count}`
     : `❤️ Like ${count}`;
 
+const card = document.createElement("div");
+card.className = "poem";
+
+const categoryText = document.createElement("p");
+categoryText.className = "small";
+categoryText.textContent = poem.category || "";
+
+const words = document.createElement("p");
+words.textContent = poem.body;
+
+card.append(categoryText, words);
+
+// Instagram-style Action Bar
+const actions = document.createElement("div");
+actions.className = "poem-actions";
+
+// Like
+const likeBtn = document.createElement("button");
+likeBtn.textContent = "❤️ Like ...";
+
+Promise.all([
+  getLikeCount(poem.id),
+  hasLiked(poem.id)
+]).then(([count, liked]) => {
+  likeBtn.textContent = liked
+    ? `❤️ Liked ${count}`
+    : `❤️ Like ${count}`;
   likeBtn.disabled = liked;
 });
 
 likeBtn.onclick = () => toggleLike(poem.id, likeBtn);
 
-card.append(likeBtn); 
-     const favorites = getFavorites();
+// Favorite
+const favorites = getFavorites();
+const favoriteBtn = document.createElement("button");
+favoriteBtn.textContent = favorites.includes(poem.id)
+  ? "❤️ पसंदीदा"
+  : "🤍 Favorite";
 
-  const favoriteBtn = document.createElement("button");
-  favoriteBtn.textContent = favorites.includes(poem.id)
-    ? "❤️ पसंदीदा"
-    : "🤍 Favorite";
+favoriteBtn.onclick = () => toggleFavorite(poem.id);
 
-  favoriteBtn.onclick = () => toggleFavorite(poem.id);
-
-  card.append(favoriteBtn);
-  const heading=document.createElement("h3");
-  heading.textContent=poem.title;
-  const categoryText=document.createElement("p");
-  categoryText.className="small";
-  categoryText.textContent=poem.category||"";
-  const words=document.createElement("p");
-  words.textContent=poem.body;
+// Copy
 const copyBtn = document.createElement("button");
 copyBtn.textContent = "📋 Copy";
 
@@ -603,16 +647,19 @@ copyBtn.onclick = async () => {
   }
 };
 
-card.append(copyBtn);
-   const shareBtn = document.createElement("button");
-shareBtn.textContent = "📲 WhatsApp पर Share करें";
+// WhatsApp - सिर्फ आइकन
+const shareBtn = document.createElement("button");
+shareBtn.textContent = "📲";
+shareBtn.title = "WhatsApp पर Share करें";
+shareBtn.setAttribute("aria-label", "WhatsApp पर Share करें");
+
 shareBtn.onclick = () => {
-  const message = poem.title + "\n\n" + poem.body;
-  const url = "https://wa.me/?text=" + encodeURIComponent(message);
+  const url = "https://wa.me/?text=" + encodeURIComponent(poem.body);
   window.open(url, "_blank");
 };
-card.append(copyBtn, shareBtn);
-  card.append(categoryText,words);
+
+actions.append(likeBtn, favoriteBtn, copyBtn, shareBtn);
+card.append(actions);
   if(isAdmin){
    const del=document.createElement("button");
    del.textContent="शायरी हटाएँ";

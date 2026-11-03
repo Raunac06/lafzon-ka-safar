@@ -429,18 +429,7 @@ body.light-mode footer {
     transform: rotate(360deg);
   }
     }
-window.addEventListener("load", () => {
-  const loader = document.getElementById("pageLoader");
 
-  setTimeout(() => {
-    loader.classList.add("hide-loader");
-
-    setTimeout(() => {
-      loader.style.display = "none";
-    }, 600);
-
-  }, 700);
-});
   </style>
   <div id="adminPanel">
 <h2>नई शायरी जोड़ें</h2>
@@ -790,6 +779,18 @@ function openMessage() {
 function closeMessage() {
   document.getElementById("messagePopup").classList.remove("show");
 }
+window.addEventListener("load", () => {
+  const loader = document.getElementById("pageLoader");
+
+  setTimeout(() => {
+    loader.classList.add("hide-loader");
+
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 600);
+
+  }, 700);
+});
 </script>
 </body>
 </html>

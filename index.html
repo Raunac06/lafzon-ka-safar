@@ -7,7 +7,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lafzon Ka Safar</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
+/* New premium poetry website design */
+body {
+  background: radial-gradient(circle at top, #302039, #100f18 65%);
+  color: #f8edf2;
+  font-family: Georgia, serif;
+}
+
+header {
+  padding: 65px 18px;
+  background: linear-gradient(135deg, #21152e, #633b59, #24152e);
+  border-bottom: 1px solid #bd8b9e;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+header h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  letter-spacing: 1px;
+  text-shadow: 0 0 18px rgba(255,213,158,0.3);
+}
+
+header p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+  padding: 25px 16px;
+}
+
+.poem {
+  background: linear-gradient(145deg, #2b2032, #1c1824);
+  border: 1px solid #76536a;
+  border-radius: 17px;
+  padding: 24px;
+  margin: 20px 0;
+  line-height: 2;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease;
+}
+
+.poem:hover {
+  transform: translateY(-3px);
+}
+
+button {
+  background: linear-gradient(135deg, #bd718e, #87516e);
+  border: 1px solid #d69bb0;
+  border-radius: 10px;
+  padding: 12px 18px;
+  transition: 0.2s;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+footer {
+  background: #21152e;
+  border-top: 1px solid #76536a;
+  padding: 35px 15px;
+}
+  <style>
 .message-overlay {
   display: none;
   position: fixed;
@@ -182,117 +245,7 @@ footer{text-align:center;padding:30px;color:#c7aab9}
   </div>
 </div>
 
-/* New premium poetry website design */
-body {
-  background: radial-gradient(circle at top, #302039, #100f18 65%);
-  color: #f8edf2;
-  font-family: Georgia, serif;
-}
 
-header {
-  padding: 65px 18px;
-  background: linear-gradient(135deg, #21152e, #633b59, #24152e);
-  border-bottom: 1px solid #bd8b9e;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-}
-
-header h1 {
-  font-size: clamp(32px, 7vw, 48px);
-  letter-spacing: 1px;
-  text-shadow: 0 0 18px rgba(255,213,158,0.3);
-}
-
-header p {
-  font-size: 16px;
-  line-height: 1.8;
-}
-
-main {
-  max-width: 850px;
-  margin: auto;
-  padding: 25px 16px;
-}
-
-.poem {
-  background: linear-gradient(145deg, #2b2032, #1c1824);
-  border: 1px solid #76536a;
-  border-radius: 17px;
-  padding: 24px;
-  margin: 20px 0;
-  line-height: 2;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease;
-}
-
-.poem:hover {
-  transform: translateY(-3px);
-}
-
-button {
-  background: linear-gradient(135deg, #bd718e, #87516e);
-  border: 1px solid #d69bb0;
-  border-radius: 10px;
-  padding: 12px 18px;
-  transition: 0.2s;
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-footer {
-  background: #21152e;
-  border-top: 1px solid #76536a;
-  padding: 35px 15px;
-}
-.poem p {
-  font-size: 18px;
-  line-height: 2.1;
-  letter-spacing: 0.3px;
-  color: #f5e8ef;
-}
-
-.poem button {
-  margin-top: 15px;
-}
-
-#search, #filter {
-  border: 1px solid #a87591;
-  border-radius: 12px;
-  background: #211b29;
-  color: #fff;
-  padding: 14px;
-  font-size: 16px;
-}
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #e5a4bd;
-  box-shadow: 0 0 12px rgba(229,164,189,0.25);
-}
-
-#search {
-  margin-top: 12px;
-}
-
-#filter {
-  cursor: pointer;
-}
-
-h2 {
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 12px rgba(255,213,158,0.15);
-}
-
-#pagination button {
-  min-width: 110px;
-}
-
-footer {
-  font-size: 15px;
-  letter-spacing: 0.5px;
-}
   <style>
 #adminPanel {
   display: none;

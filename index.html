@@ -467,7 +467,64 @@ function toggleMenu() {
     btn.textContent = "☰ Menu";
   }
 }
-function el(id){return document.getElementById(id)}
+function downloadShayariImage(poemText) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = 1080;
+  canvas.height = 1350;
+
+  const gradient = ctx.createLinearGradient(0, 0, 1080, 1350);
+  gradient.addColorStop(0, "#302039");
+  gradient.addColorStop(1, "#100f18");
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1080, 1350);
+
+  ctx.textAlign = "center";
+
+  ctx.fillStyle = "#f0a5c3";
+  ctx.font = "bold 52px sans-serif";
+  ctx.fillText("Lafzon Ka Safar", 540, 170);
+
+  ctx.fillStyle = "#f8edf2";
+  ctx.font = "42px sans-serif";
+
+  const words = poemText.split("");
+  const lines = [];
+  let line = "";
+
+  words.forEach(char => {
+    const testLine = line + char;
+    if (ctx.measureText(testLine).width > 850 && line) {
+      lines.push(line);
+      line = char;
+    } else {
+      line = testLine;
+    }
+  });
+
+  if (line) lines.push(line);
+
+  const lineHeight = 65;
+  const totalHeight = lines.length * lineHeight;
+  let y = (1350 - totalHeight) / 2;
+
+  lines.forEach(text => {
+    ctx.fillText(text, 540, y);
+    y += lineHeight;
+  });
+
+  ctx.fillStyle = "#d9b7c7";
+  ctx.font = "28px sans-serif";
+  ctx.fillText("❤️ RONAK", 540, 1230);
+
+  const link = document.createElement("a");
+  link.download = "Lafzon-Ka-Safar.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+  function el(id){return document.getElementById(id)}
 let currentPage = 1;
   let showFavoritesOnly = false;
 let readingMode = false;
@@ -684,7 +741,15 @@ pageData.forEach(poem => {
       alert("कॉपी नहीं हो पाया। कृपया दोबारा कोशिश करें।");
     }
   };
+// Download Shayari Image
+const downloadBtn = document.createElement("button");
+downloadBtn.textContent = "🖼️ Download Image";
 
+downloadBtn.onclick = () => {
+  downloadShayariImage(poem.body);
+};
+
+actions.append(downloadBtn);
   // WhatsApp
   const shareBtn = document.createElement("button");
   shareBtn.textContent = "📲";

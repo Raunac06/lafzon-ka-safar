@@ -192,6 +192,7 @@ button {
 </header>
 <main>
 <h2>मेरी शायरियाँ</h2>
+  <button id="readingToggle" onclick="toggleReadingMode()">🌙 Reading Mode</button>
 <input
   id="search"
   type="search"
@@ -227,8 +228,34 @@ button {
     <p id="loginMessage" class="small"></p>
   </div>
 </div>
+body.reading-mode header,
+body.reading-mode footer,
+body.reading-mode #search,
+body.reading-mode #filter,
+body.reading-mode #favoritesToggle,
+body.reading-mode #readingToggle,
+body.reading-mode #adminPanel,
+body.reading-mode .pagination {
+  display: none !important;
+}
 
+body.reading-mode main {
+  max-width: 750px;
+  padding-top: 35px;
+}
 
+body.reading-mode .poem {
+  background: #17131d;
+  border: 1px solid #a87591;
+  padding: 30px;
+  margin: 25px 0;
+  line-height: 2.3;
+}
+
+body.reading-mode .poem p {
+  font-size: 21px;
+  line-height: 2.3;
+}
   <style>
 #adminPanel {
   display: none;
@@ -297,7 +324,18 @@ const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function el(id){return document.getElementById(id)}
 let currentPage = 1;
   let showFavoritesOnly = false;
+let readingMode = false;
 
+function toggleReadingMode() {
+  readingMode = !readingMode;
+
+  document.body.classList.toggle("reading-mode", readingMode);
+
+  const btn = el("readingToggle");
+  btn.textContent = readingMode
+    ? "☀️ Normal Mode"
+    : "🌙 Reading Mode";
+}
 function toggleFavoritesView() {
   showFavoritesOnly = !showFavoritesOnly;
 

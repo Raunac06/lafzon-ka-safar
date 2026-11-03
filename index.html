@@ -391,14 +391,28 @@ pagination.children[2].disabled = currentPage === totalPages;
   categoryText.textContent=poem.category||"";
   const words=document.createElement("p");
   words.textContent=poem.body;
-const shareBtn = document.createElement("button");
+const copyBtn = document.createElement("button");
+copyBtn.textContent = "📋 Copy";
+
+copyBtn.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(poem.body);
+    copyBtn.textContent = "✅ Copied!";
+    setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+  } catch (error) {
+    alert("कॉपी नहीं हो पाया। कृपया दोबारा कोशिश करें।");
+  }
+};
+
+card.append(copyBtn);
+   const shareBtn = document.createElement("button");
 shareBtn.textContent = "📲 WhatsApp पर Share करें";
 shareBtn.onclick = () => {
   const message = poem.title + "\n\n" + poem.body;
   const url = "https://wa.me/?text=" + encodeURIComponent(message);
   window.open(url, "_blank");
 };
-card.append(shareBtn);
+card.append(copyBtn, shareBtn);
   card.append(categoryText,words);
   if(isAdmin){
    const del=document.createElement("button");

@@ -192,6 +192,7 @@ button {
 </header>
 <main>
 <h2>मेरी शायरियाँ</h2>
+  <button id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
   <button id="readingToggle" onclick="toggleReadingMode()">🌙 Reading Mode</button>
 <input
   id="search"
@@ -296,6 +297,38 @@ body.reading-mode .poem p {
   font-size: 21px;
   line-height: 2.3;
 }
+body.light-mode {
+  background: #f8f3f5;
+  color: #302333;
+}
+
+body.light-mode header {
+  background: linear-gradient(135deg, #f3dce5, #f8e9d5);
+}
+
+body.light-mode header h1,
+body.light-mode h2 {
+  color: #713c58;
+}
+
+body.light-mode header p {
+  color: #684b5b;
+}
+
+body.light-mode .poem {
+  background: #ffffff;
+  color: #302333;
+  border: 1px solid #d9b7c7;
+  box-shadow: 0 5px 18px rgba(80, 40, 60, 0.10);
+}
+
+body.light-mode .poem p {
+  color: #302333;
+}
+
+body.light-mode footer {
+  color: #684b5b;
+}
   </style>
   <div id="adminPanel">
 <h2>नई शायरी जोड़ें</h2>
@@ -326,7 +359,18 @@ function el(id){return document.getElementById(id)}
 let currentPage = 1;
   let showFavoritesOnly = false;
 let readingMode = false;
+let lightMode = false;
 
+function toggleTheme() {
+  lightMode = !lightMode;
+
+  document.body.classList.toggle("light-mode", lightMode);
+
+  const btn = el("themeToggle");
+  btn.textContent = lightMode
+    ? "🌙 Dark Mode"
+    : "☀️ Light Mode";
+  }
 function toggleReadingMode() {
   readingMode = !readingMode;
 

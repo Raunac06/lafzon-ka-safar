@@ -7,23 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lafzon Ka Safar</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-/* New premium poetry website design */
-body {
-  background: radial-gradient(circle at top, #302039, #100f18 65%);
-  color: #f8edf2;
-  font-family: Georgia, serif;
-}
-
-header {
-  padding: 65px 18px;
-  background: linear-gradient(135deg, #21152e, #633b59, #24152e);
-  border-bottom: 1px solid #bd8b9e;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-}
-
-header h1 {
-  font-size: clamp(32px, 7vw, 48px);
-
+  
   <style> 
 .message-overlay {
   display: none;
@@ -126,6 +110,49 @@ input,textarea,select{width:100%;padding:12px;margin:7px 0 14px;border-radius:8p
 #adminPanel{display:none;background:#211b29;padding:18px;border-radius:12px;margin-top:20px}
 
 footer{text-align:center;padding:30px;color:#c7aab9}
+    body {
+  background: radial-gradient(circle at top, #302039, #100f18 65%);
+  color: #f8edf2;
+}
+
+header {
+  padding: 65px 18px;
+  background: linear-gradient(135deg, #21152e, #633b59, #24152e);
+  border-bottom: 1px solid #bd8b9e;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+header h1 {
+  font-size: clamp(32px, 7vw, 48px);
+  letter-spacing: 1px;
+}
+
+.poem {
+  background: linear-gradient(145deg, #2b2032, #1c1824);
+  border: 1px solid #76536a;
+  border-radius: 17px;
+  padding: 24px;
+  margin: 20px 0;
+  line-height: 2;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+button {
+  background: linear-gradient(135deg, #bd718e, #87516e);
+  border: 1px solid #d69bb0;
+  border-radius: 10px;
+}
+
+.poem p {
+  font-size: 18px;
+  line-height: 2.1;
+  color: #f5e8ef;
+}
+
+#search, #filter {
+  border: 1px solid #a87591;
+  border-radius: 12px;
+  }
 </style>
 </head>
 <body>

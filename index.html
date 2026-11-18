@@ -689,7 +689,9 @@ pagination.children[2].disabled = currentPage === totalPages;
 pageData.forEach(poem => {
   const card = document.createElement("div");
   card.className = "poem";
-
+const title = document.createElement("h3");
+title.textContent = poem.title || "बिना शीर्षक";
+card.append(title);
   const categoryText = document.createElement("p");
   categoryText.className = "small";
   categoryText.textContent = poem.category || "";
